@@ -1,5 +1,6 @@
 Modules 
 =================
+test 
 1. Donations
 2. Event Management
 3. Email Notification
