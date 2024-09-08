@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+  {% if request.user.is_authenticated and request.user.is_superuser %}
+  <div class="text-end mb-3">
+    <a href="{% url 'create_events' %}" class="btn btn-sm btn-success">Create New Event</a>
+  </div>
+  {% endif %}
+
+  <div class="row">
+    {% for event, link, is_future_event in all_events %}
+    <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
+      <div class="card h-100 {% if not is_future_event %}bg-light{% endif %}" style="{% if not is_future_event %}opacity: 0.5; pointer-events: none;{% endif %}">
+        {% if event.banner %}
+        <img src="{{ event.banner.url }}" class="card-img-top" alt="{{ event.title }}">
+        {% endif %}
+
+        <div class="card-body d-flex flex-column">
+          <a href="{% url 'event_details' event.slug %}" class="text-danger text-decoration-none">
+            <h5 class="card-title">{{ event.title }}</h5>
+          </a>
+          <p class="card-text flex-grow-1">{{ event.description|truncatechars:200 }}</p>
+        </div>
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><span class="badge bg-secondary">{{ event.category }}</span></li>
+          <li class="list-group-item">Created On: {{ event.created_at }}</li>
+          <li class="list-group-item">Start Date Time: {{ event.date_from }} - Start Time: {{ event.time_from }}</li>
+          <li class="list-group-item">End Date Time: {{ event.date_to }} - End Time: {{ event.time_to }}</li>
+          <li class="list-group-item">Venue: {{ event.venue }}</li>
+          <li class="list-group-item">Status: {{ event.is_active }}</li>
+          {% if is_future_event %}
+          <li class="list-group-item text-success">Ongoing</li>
+          <li class="list-group-item">
+            <a href="{{ link }}" target="_blank" class="btn btn-sm btn-primary">Add to calendar</a>
+          </li>
+          {% else %}
+          <li class="list-group-item text-danger">Expired</li>
+          {% endif %}
+        </ul>
+
+        {% if request.user.is_authenticated and request.user.is_superuser %}
+        <div class="card-body text-end">
+          <a href="{% url 'edit_events' event.id %}" class="btn btn-sm btn-outline-primary me-2">Edit</a>
+          <a href="{% url 'delete_events' event.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <h4 class="text-center">There is no event now</h4>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}
+
+<style>
+  .card-img-top {
+    height: 200px;
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    width: 100%; /* Ensures the image covers the full width of the card */
+  }
+</style>

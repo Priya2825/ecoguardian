@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mt-5">
+    <h1>Adopt {{ pet.name }}</h1>
+    <div class="row mt-4">
+        <!-- Pet Details -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <img src="{{ pet.image.url }}" class="card-img-top" alt="{{ pet.name }}">
+                <div class="card-body">
+                    <h4 class="card-title">{{ pet.name }}</h4>
+                    <p class="card-text">Breed: {{ pet.breed.name }}</p>
+                    <p class="card-text">Date of Birth: {{ pet.dob }}</p>
+                    <p class="card-text">{{ pet.description }}</p>
+                </div>
+            </div>
+        </div>
+        <!-- Adoption Request Form -->
+        <div class="col-md-6">
+            <h2>Adoption Request</h2>
+            <form method="post">
+                {% csrf_token %}
+                
+                <!-- Display form errors -->
+                {% if form.errors %}
+                <div class="alert alert-danger mt-3">
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-lg rounded-3 btn-outline-success mt-3">Submit Request</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="p-4 md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+    <h1> All Reports <span class="badge text-bg-secondary"> {{reports.count}}</span></h1>
+    {% if request.user.is_authenticated and request.user.is_superuser %}
+    <div class="row">
+        {% for report in reports %}
+        <div class="col-12 mb-2">
+            <div class="bg-light-subtle p-3 rounded-4 border border-start border-4">
+                <h4 class="fw-bold text-dark">{{report.report.report_type}}</h4>
+                <p>{{report.report.description}}</p>
+                <small><b>Address: </b>{{report.report.location}}</small><br>
+                <small><b>Reporter Email: </b>{{report.report.contact_email}}</small><br>
+                <small><b>Reporter Contact: </b>{{report.report.contact_phone}}</small><br>
+                <small><b>Reported On: </b>{{report.report.reported_at}}</small><br>
+            <br>
+            {% if report.is_completed %}
+            <a href="{% url 'report-notcompleted' report.id %}" class="btn btn-outline-secondary">Not Completed</a>
+            {% else %}
+            <a href="{% url 'report-completed' report.id %}" class="btn btn-secondary">Completed</a>
+           {% endif %}
+        </div>
+        </div>
+        {% empty %}
+        <small class="text-muted fw-bold"> There is no report!</small>
+    {% endfor %}
+    </div>
+    {% else %}
+    <small class="text-muted text-danger"> You are not authorized to seethis page!</small>
+    {% endif %}
+</div>
+{% endblock content %}

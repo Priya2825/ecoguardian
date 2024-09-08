@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mt-5">
+    <h1>Adopt Requests<span class="badge text-bg-secondary">{{adopt_requests.count}}</span></h1>
+    <div class="row">
+        {% for req in adopt_requests %}
+        <div class="col-sm-12 col-md-6 col-lg-6" >
+            <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="{{req.pet.image.url}}" class="img-fluid rounded-start" alt="{{req.pet.name}}">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{req.pet.name}}</h5>
+                  <p class="card-text">{{req.pet.description|truncatechars:100}}</p>
+                  <p class="card-text"><small class="text-body-secondary">Requested on: {{req.created_at}}</small></p>
+                  <p>
+                    <!--- adoptee details modal -->
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adopteeDetailsModal_{{request.id}}">
+                          Adoptee Details
+                      </button>
+                      
+                      <!-- Modal -->
+                      <div class="modal fade" id="adopteeDetailsModal_{{req.id}}" tabindex="-1" aria-labelledby="adopteeDetailsModalLabel_{{request.id}}" aria-hidden="true">
+                          <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                              <h1 class="modal-title fs-5" id="adopteeDetailsModalLabel_{{req.id}}">Adoptee Details</h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                  <ol class="list-group list-group-flush">
+                                      <li class="list-group-item"><b>Full Name:</b> {{req.adoptee.first_name}} {{request.adoptee.last_name}}</li>
+                                      <li class="list-group-item"><b>Email:</b> {{req.adoptee.email}}</li>
+                                      <li class="list-group-item"><b>Contact:</b> {{req.adoptee.contact}}</li>
+                                      <li class="list-group-item"><b>Message:</b> {{req.adoptee.message}}</li>
+                                  </ol>
+                              </div>
+                              <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              </div>
+                          </div>
+                          </div>
+                      </div>
+                    </p>
+                    {% if req.adoption_completed %}
+                    <a href="{% url 'request-cancelled' req.id request.user.id %}" class="btn btn-danger">Cancel Request</a>
+                    {% else %}
+                    <p><a href="{% url 'request-accepted' req.id request.user.id %}" class="btn btn-success">Accept Request</a></p>
+                    {% endif %}
+                </div>
+                
+              </div>
+            </div>
+            </div>
+          </div>
+   {% empty %}
+   <small class="text-muted fw-bold"> There is no adoption request for your pets! </small>
+   {% endfor %}
+   </div>
+</div>
+{% endblock content %}
+

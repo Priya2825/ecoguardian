@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+    <div class="p-2">
+        {% if request.user.is_authenticated and request.user.is_superuser %}
+        <a href="{% url 'recycle-request-list' %}" class="btn btn-sm btn-success">Manage Requests</a>
+        {% endif %}
+        <h1 class="fw-bold"> Recycle Request Form</h1>
+        <small class="text-danger"> Please enter all the required information correctly so that we will no thave any trouble picking up the recycle items from your house</small>
+        <br>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if request.user.is_authenticated %}
+            {{loggeduser_recycle_form|crispy}}
+            {% else %}
+            {{guestuser_recycle_form|crispy}}
+            {% endif %}
+            <button type="submit" class="btn btn-lg btn-success">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

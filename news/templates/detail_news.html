@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-5">
+    <div class="p-4 mb-4 rounded bg-light shadow-sm">
+        <h2>{{ news.title }}</h2>
+        <p><strong>By {{ news.author }}</strong> | {{ news.created_at|date:"d-m-Y" }}</p>
+        {% if news.news_image %}
+        <img src="{{ news.news_image.url }}" alt="{{ news.title }}" class="img-fluid mb-4">
+        {% endif %}
+        <p>{{ news.body|safe}}</p>
+
+        <div class="mt-4">
+            <h5>Related Articles</h5>
+            <ul>
+                <!-- Loop through related articles if any -->
+                {% for related in related_news %}
+                <li><a href="{% url 'detail-news' related.slug %}">{{ related.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    
+        <div class="mt-4">
+            <h5>Comments</h5>
+            <!-- Include comments section here -->
+        </div>
+
+        <div class="mt-4">
+            <h5>Share this article</h5>
+            <a href="#" class="btn btn-primary">Facebook</a>
+            <a href="#" class="btn btn-info">Twitter</a>
+        </div>
+
+        <a href="{% url 'list-news' %}" class="btn btn-secondary mt-4">Back to News List</a>
+    </div>
+</div>
+{% endblock content %}

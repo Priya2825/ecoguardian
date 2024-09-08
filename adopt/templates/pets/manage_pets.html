@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mt-5">
+    <h1>Manage Pets<span class="badge text-bg-secondary">{{pets.count}}</span></h1>
+    <a href="{% url 'adopt-requests' request.user.id %}" class="btn btn-sm btn-success"> Adopt Requests</a>
+    <div class="row mt-4">
+        {% for pet in pets %}
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-4 d-flex align-items-stretch">
+            <div class="card">
+                <div class="image-container">
+                    <img src="{{ pet.image.url }}" class="card-img-top" alt="{{ pet.name }}_img">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title"><a href="{% url 'detail-pet' pet.slug %}">{{ pet.name }}</a></h5>
+                    <p class="card-text">{{ pet.description|truncatechars:80 }}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Sex: {{ pet.sex|title }}</li>
+                    <li class="list-group-item">Breed: {{ pet.breed.name }}</li>
+                    <li class="list-group-item">Born on: {{ pet.dob }}</li>
+                    <li class="list-group-item">
+                        <a href="{% url 'edit-pet' pet.slug %}" class="btn btn-sm btn-success">Edit</a>
+                        
+                        <!-- Button trigger modal -->
+<button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deletePetsModal_{{pet.id}}">
+    Delete
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="deletePetsModal_{{pet.id}}" tabindex="-1" aria-labelledby="deletePetsModalLabel_{{pet.id}}" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deletePetsModalLabel_{{pet.id}}">Delete Pet</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="p-2">
+            <p>Hi {{request.user.first_name}} Are you sure to delete pet {{pet.name}}? </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <a href="{% url 'delete-pet' pet.slug %}" class="btn btn-sm btn-dark">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        {% empty %}
+        <small>There are no pets added by you!</small>
+        {% endfor %}
+    </div>
+    
+</div>
+{% endblock content %}
+

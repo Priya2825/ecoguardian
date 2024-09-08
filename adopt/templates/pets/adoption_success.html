@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h1>Adoption Successful!</h1>
+    <p>Thank you for your interest in adopting. We will get back to you shortly.</p>
+    <a href="{% url 'list-pets' %}" class="btn btn-lg btn-outline-success">Back to Available Pets</a>
+</div>
+{% endblock content %}

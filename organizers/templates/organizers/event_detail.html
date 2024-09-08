@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">{{ event_detail.title }}</h1>
+        <a href="{{ google_calender_url }}" target="_blank" class="btn btn-success btn-sm ms-3">Add to calendar</a>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-8">
+            <img src="{{ event_detail.banner.url }}" class="img-fluid mb-3" alt="" />
+            <div class="p-3 bg-light rounded">
+                <h4>Description</h4>
+                <p>{{ event_detail.description }}</p>
+            </div>
+            <div class="p-3 bg-light rounded mt-3">
+                <h4>Terms and Conditions</h4>
+                <p>{{ event_detail.terms }}</p>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <div class="card mb-3 shadow-sm">
+                <div class="card-header bg-success text-white">
+                    Event Details
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Category:</strong> <span class="badge bg-secondary">{{ event_detail.category }}</span></li>
+                    <li class="list-group-item"><strong>Created On:</strong> {{ event_detail.created_at }}</li>
+                    <li class="list-group-item"><strong>Start Date & Time:</strong> {{ event_detail.date_from }} - {{ event_detail.time_from }}</li>
+                    <li class="list-group-item"><strong>End Date & Time:</strong> {{ event_detail.date_to }} - {{ event_detail.time_to }}</li>
+                    <li class="list-group-item"><strong>Venue:</strong> {{ event_detail.venue }}</li>
+                    <li class="list-group-item"><strong>Status:</strong> {{ event_detail.is_active }}</li>
+                </ul>
+            </div>
+            <div class="p-3 bg-light rounded mt-3">
+                <h4>Volunteers</h4>
+                {% for volunteer in event_detail.volunteers.all %}
+                    <span class="bg-warning px-2 rounded">
+                        <small>{{ volunteer.first_name }}</small>
+                    </span><br>
+                {% endfor %}
+            </div>
+            <div class="p-3 bg-light rounded mt-3">
+                <h4>Sponsors</h4>
+                {% for sponser in event_detail.sponsers.all %}
+                    <span class="bg-warning px-2">
+                        <small>{{ sponser.sponser }}</small>
+                    </span><br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="mt-3">
+        <span>Would you like to donate? </span>
+        <a href="{% url 'donation_to_event' event_detail.slug %}" class="btn btn-sm btn-success">Donate Now</a>
+    </div>
+</div>
+{% endblock content %}

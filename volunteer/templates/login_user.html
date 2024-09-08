@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+    <div class="text-center">
+        <h1> Login Volunteer</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{user_form|crispy}}
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <p>If you haven't registered for being a volunteer please <a href="{% url 'register-user' %}" class="text-decoration-none">login</a> </p>
+    </div>
+</div>
+
+{% endblock content %}

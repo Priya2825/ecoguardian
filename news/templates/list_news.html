@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-5">
+    <style>
+        .container {
+            width: 90%;
+            margin: auto;
+        }
+
+        .news-section {
+            margin-top: 2rem;
+        }
+
+        .news-section h2 {
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .main-news {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .main-news .main-article {
+            flex: 2;
+            position: relative;
+        }
+
+        .main-news .main-article img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .main-news .main-article .main-article-content {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 1rem;
+            border-radius: 8px;
+            max-width: calc(100% - 2rem);
+        }
+
+        .main-news .main-article .main-article-content h3 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .main-news .main-article .category-badge {
+            display: inline-block;
+            background: #2E8B57; /* Green color for category badge */
+            color: #fff;
+            padding: 0.2rem 0.4rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+        }
+
+        .main-news .side-articles {
+            flex: 1.5; /* Increased flex size for sidebar */
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .main-news .side-articles .side-article {
+            display: flex;
+            gap: 1rem;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .main-news .side-articles .side-article .image-container {
+            width: 120px; /* Increased width for image container */
+            height: 120px; /* Increased height for image container */
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .main-news .side-articles .side-article .image-container img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .main-news .side-articles .side-article-content {
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: calc(100% - 120px); /* Adjusted width for content */
+        }
+
+        .main-news .side-articles .side-article-content h4 {
+            margin: 0;
+            font-size: 1rem;
+            color: #2E8B57; /* Green color for article titles */
+        }
+
+        .main-news .side-articles .side-article-content p {
+            margin: 0.5rem 0 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .main-news .side-articles .side-article-content .author-date {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .main-news .side-articles .side-article-content a {
+            text-decoration: none;
+            color: #2E8B57; /* Green color for links */
+            transition: color 0.3s;
+        }
+
+        .main-news .side-articles .side-article-content a:hover {
+            color: #3CB371; /* Light green color for hover effect */
+        }
+
+        .main-news .side-articles .side-article-content .category-badge {
+            display: inline-block;
+            background: #2E8B57; /* Green color for category badge */
+            color: #fff;
+            padding: 0.2rem 0.4rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+        }
+
+        .more-news-section {
+            margin-top: 3rem;
+        }
+
+        .more-news-section .card {
+            margin-bottom: 2rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .more-news-section .card img {
+            height: 200px;
+            object-fit: contain;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .more-news-section .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .more-news-section .card-title {
+            font-size: 1.25rem;
+            color: #2E8B57; /* Green color for card titles */
+        }
+
+        .more-news-section .card-text {
+            color: #666;
+        }
+
+        .more-news-section .author-date {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .more-news-section .category-badge {
+            display: inline-block;
+            background: #2E8B57; /* Green color for category badge */
+            color: #fff;
+            padding: 0.2rem 0.4rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+        }
+
+        .more-news-section .read-more {
+            text-align: right;
+        }
+
+        .more-news-section .read-more a {
+            text-decoration: none;
+            color: #fff; /* Green color for read more links */
+            transition: color 0.3s;
+        }
+
+        .more-news-section .read-more a:hover {
+            color: #fff; /* Light green color for hover effect */
+        }
+    </style>
+
+    <div class="news-section">
+        <p class="text-center">Search to learn about new product features, the latest in technology, and updates.</p>
+        <form class="text-center mb-5" method="get">
+            <input type="search" name="q" value="{{ query }}" class="form-control d-inline-block w-auto" placeholder="Enter to search">
+            <button type="submit" class="btn btn-success">Search</button>
+        </form>
+        <h2 class="fw-bold text-center mb-4 ">Latest News Section</h2>
+        {% if request.user.is_authenticated and request.user.is_superuser %}
+        <div class="text-end mb-4">
+            <a href="{% url 'create-news' %}" class="btn btn-success btn-lg">Create News</a>
+        </div>
+        {% endif %}
+        <div class="main-news">
+            <div class="main-article">
+                {% if all_news %}
+                {% with main_news=all_news.0 %}
+                {% if main_news.news_image %}
+                <img src="{{ main_news.news_image.url }}" alt="{{ main_news.title }}">
+                {% endif %}
+                <div class="main-article-content">
+                    <h3><a href="{% url 'detail-news' main_news.slug %}">{{ main_news.title }}</a></h3>
+                    <p class="author-date">By {{ main_news.author }} | {{ main_news.created_at|date:"d M Y" }}</p>
+                    <div class="category-badge">{{ main_news.category.name }}</div>
+                </div>
+                {% endwith %}
+                {% endif %}
+            </div>
+            <div class="side-articles">
+                {% for news in all_news|slice:"1:4" %}
+                <div class="side-article">
+                    <div class="image-container">
+                        {% if news.news_image %}
+                        <img src="{{ news.news_image.url }}" alt="{{ news.title }}">
+                        {% endif %}
+                    </div>
+                    <div class="side-article-content">
+                        <h4><a href="{% url 'detail-news' news.slug %}">{{ news.title }}</a></h4>
+                        <p class="author-date">By {{ news.author }} | {{ news.created_at|date:"d M Y" }}</p>
+                        <div class="category-badge">{{ news.category.name }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="more-news-section">
+        <h2>More News</h2>
+        <div class="row">
+            {% for news in all_news|slice:"4:8" %}
+            <div class="col-md-4">
+                <div class="card">
+                    {% if news.news_image %}
+                    <img src="{{ news.news_image.url }}" class="card-img-top" alt="{{ news.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{% url 'detail-news' news.slug %}">{{ news.title }}</a></h5>
+                        <p class="card-text">{{ news.summary }}</p>
+                        <p class="author-date">By {{ news.author }} | {{ news.created_at|date:"d M Y" }}</p>
+                        <div class="category-badge">{{ news.category.name }}</div>
+                        <div class="read-more">
+                            {% if request.user.is_authenticated and request.user.is_superuser %}
+                            <div>
+                                <a href="{% url 'edit-news' news.slug %}" class="btn btn-success btn-sm me-2">Edit</a>
+                                <a href="{% url 'delete-news' news.slug %}" class="btn btn-dark btn-sm">Delete</a>
+                            </div>
+                            {% endif %}
+                            <a href="{% url 'detail-news' news.slug %}">Read more</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

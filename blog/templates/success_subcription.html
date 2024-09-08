@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+    <div class="position-relative p-5 text-center text-muted bg-body border border-dashed rounded-5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+            <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0"/>
+            <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+          </svg>
+
+        <svg class="bi mt-5 mb-3" width="48" height="48"><use xlink:href="#check2-circle"></use></svg>
+        <h1 class="text-success fw-bold">Thank you for subscribing :)</h1>
+        <p class="col-lg-6 mx-auto mb-4">
+          In future we will keep posting you the latest blogs and news regarding enviromnent conservation and animal protection.
+        </p>
+        <a href="{% url 'list-blogs' %}" class="btn btn-primary px-5 mb-5" type="button">
+          Back to blogs
+        </a>
+      </div>
+</div>
+{% endblock content %}

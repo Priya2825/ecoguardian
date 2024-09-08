@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+   <h1 class="text-center">Donations to Events</h1>
+    <div class="p-2">
+        <h3 class="text-danger">Event: {{event.title}}</h3>
+        <form method="post">
+            {% csrf_token %}
+            
+              <div class="mb-3">
+                <label for="donorAmountEventInputField" class="form-label">Amount</label>
+                <input type="number" class="form-control" id="donorAmountEventInputField" name="inputAmountEvent" placeholder="Enter the amount">
+              </div>
+              <button class="btn btn-lg btn-primary" type="submit">Donate Now</button>
+        </form>
+    </div>
+
+</div>
+{% endblock content %}

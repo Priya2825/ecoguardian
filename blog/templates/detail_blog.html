@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container my-5">
+    <div class="card shadow-sm border-light">
+       
+        
+        <div class="card-body">
+            <!-- Blog Title and Meta Information -->
+            <h1 class="fw-bold text-center text-primary">{{ blog.title }}</h1>
+            <div class="text-center mb-4">
+                <small class="text-muted">Author: {{ blog.author }}</small><br>
+                <small class="text-muted">Created On: {{ blog.created_at }}</small>
+            </div>
+            
+            <!-- Blog Content -->
+            <div class="bg-light p-3 rounded">
+                {{ blog.body|safe }}
+            </div>
+            <!------Comment Content-------->
+            <div class="my-3 p-3 bg-body rounded shadow-sm">
+                <h6 class="border-bottom pb-2 mb-0">Comments {{comments.count}}</h6>
+                {% for comment in comments %}
+                <div class="d-flex text-body-secondary pt-3">
+                  <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"></rect><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
+                  <p class="pb-3 mb-0 small lh-sm border-bottom">
+                    <strong class="d-block text-gray-dark">{% if comment.user %} {{comment.user.first_name}} {{comment.user.last_name}} {% else %} {{comment.full_name}} {% endif %}</strong>
+                    {{comment.body}}
+                    <br>
+                    <i>{{comment.created_at}}</i>
+                  </p>
+                </div>
+                {% empty %}
+                <small class="text-success fw-bold">There is no comments!</small>
+                {% endfor %}
+                <section class="bg-light p-3 mt-3">
+                    <h4>Add a comment</h4>
+                    <form method="post">
+                        {% csrf_token %}
+                        {% if request.user.is_authenticated %}
+                        {{loggeduser_form|crispy}}
+                        {% else %}
+                        <div id="div_id_full_name" class="mb-3"> <label for="id_full_name" class="form-label">
+                            Full name
+                        </label> <input type="text" name="full_name" placeholder="Enter your full name" maxlength="200" class="textinput form-control" id="id_full_name" required> </div> <div id="div_id_email" class="mb-3"> <label for="id_email" class="form-label">
+                            Email
+                        </label> <input type="email" name="email" placeholder="Enter your email address" required="" maxlength="254" class="emailinput form-control" id="id_email" required> </div> <div id="div_id_body" class="mb-3"> <label for="id_body" class="form-label requiredField">
+                            Body<span class="asteriskField">*</span> </label> <textarea name="body" cols="40" rows="3" placeholder="Add your comment.." required="" class="textarea form-control" id="id_body" required></textarea> </div>
+                        {% endif %}
+                        <button type="submit" class="btn btn-sm btn-primary">Post Comment</button>
+                    </form>
+                </section>
+              </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock content %}

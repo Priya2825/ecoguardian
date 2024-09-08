@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+  <div class="p-4 bg-dark text-white rounded-4">
+    <h1>Your Donations {{request.user.id}}</h1>
+    <div class="row">
+      <div class="col-6">
+        <h4>Total Donation: <span class="badge text-bg-secondary">${{total_general_donation}}</span></h4>
+      </div>
+      <div class="col-6">
+        <h4>Total Event Donation: <span class="badge text-bg-secondary">${{total_event_donation}}</span></h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-2 bg-light rounded-3 mt-3">
+    <h4 class="fw-bold text-success">If you would like to donate please choose one of the options below</h4>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="simpleDonate-tab" data-bs-toggle="tab" data-bs-target="#simpleDonate-tab-pane" type="button" role="tab" aria-controls="simpleDonate-tab-pane" aria-selected="true">Donate</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="eventDonate-tab" data-bs-toggle="tab" data-bs-target="#eventDonate-tab-pane" type="button" role="tab" aria-controls="eventDonate-tab-pane" aria-selected="false">Donate For Event</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="simpleDonate-tab-pane" role="tabpanel" aria-labelledby="simpleDonate-tab" tabindex="0">
+        <div class="p-2">
+          <h3>Enter the amount to donate</h3>
+          <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="donorNameInputField" class="form-label">Donor's name</label>
+              <input type="text" class="form-control" id="donorNameInputField" value="{% if request.user.is_authenticated %} {{request.user.first_name}} {{request.user.last_name}} {% else %} '' {% endif %}" name="inputDonorName" placeholder="Enter your full name">
+            </div>
+            <div class="mb-3">
+              <label for="donorAmountInputField" class="form-label">Amount</label>
+              <input type="number" class="form-control" id="donorAmountInputField" name="inputAmount" placeholder="Enter the amount">
+            </div>
+            <button class="btn btn-lg btn-success" type="submit">Donate Now</button>
+          </form>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="eventDonate-tab-pane" role="tabpanel" aria-labelledby="eventDonate-tab" tabindex="0">
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+          <h6 class="border-bottom pb-2 mb-0">Events</h6>
+          {% for event in events %}
+          <div class="d-flex text-body-secondary pt-3">
+            <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"></rect><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
+            <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
+              <div class="d-flex justify-content-between">
+                <strong class="text-gray-dak">{{event.title}}</strong>
+                <a href="{% url 'donation_to_event' event.slug %}">Donate Now</a>
+              </div>
+              <span class="d-block">{{event.created_at}}</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ Section -->
+<div class="p-2 bg-light rounded-3 mt-3">
+  <h4 class="fw-bold text-success">Frequently Asked Questions</h4>
+  <div class="accordion" id="faqAccordion">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="faq1Header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1">
+          How Can I Make a Donation?
+        </button>
+      </h2>
+      <div id="faq1" class="accordion-collapse collapse show" aria-labelledby="faq1Header" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          You can make a donation by filling out the form above with your name and the amount you wish to donate.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="faq2Header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
+          Is My Donation Tax-Deductible?
+        </button>
+      </h2>
+      <div id="faq2" class="accordion-collapse collapse" aria-labelledby="faq2Header" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Yes, your donation is tax-deductible as per the applicable laws.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="faq3Header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
+          Can I Donate In Honor Or Memory Of Someone?
+        </button>
+      </h2>
+      <div id="faq3" class="accordion-collapse collapse" aria-labelledby="faq3Header" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Yes, you can dedicate your donation in honor or memory of someone. Simply indicate this on the donation form.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="faq4Header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
+          How Can I Volunteer?
+        </button>
+      </h2>
+      <div id="faq4" class="accordion-collapse collapse" aria-labelledby="faq4Header" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          We have various volunteering opportunities available. Please visit our volunteer page or contact us for more information.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="faq5Header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">
+          What Are Your Funding Priorities?
+        </button>
+      </h2>
+      <div id="faq5" class="accordion-collapse collapse" aria-labelledby="faq5Header" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Our funding priorities focus on areas where we can make the most significant impact. For detailed information, please contact us or visit our funding priorities page.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Urgent Fundraising Section -->
+<div class="p-2 bg-light rounded-3 mt-3">
+  <h4 class="fw-bold text-success">Urgent Fundraising!</h4>
+  <p>Time is of the essence! Join our mission NOW to make an immediate impact. Every second counts!</p>
+  <div class="row">
+    {% for event in fund_raising_events %}
+    <div class="col-md-4">
+      <div class="card">
+        <img src="{{event.event.banner.url}}" class="card-img-top" height="300" alt="{{event.event.title}}">
+        <div class="card-body">
+          <h5 class="card-title">{{event.event.title}}</h5>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <p class="card-text">${{event.amount}} raised</p>
+          <!-- <p class="card-text"><small class="text-muted">7 days left</small></p> -->
+          <a href="{% url 'donation_to_event' event.event.slug %}" class="btn btn-success">Donate Now</a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <small class="fw-bold text-muted">No urgent fundraising events available</small>
+    {% endfor %}
+    
+  </div>
+</div>
+
+{% endblock content %}

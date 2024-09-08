@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+    <h1>Detail Pet: {{ pet.name }}</h1>
+</div>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="image-container mb-4">
+                <img src="{{ pet.image.url }}" class="img-fluid rounded" alt="{{ pet.name }}">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h2>{{ pet.name }}</h2>
+            <h4>Breed: {{ pet.breed.name }}</h4>
+            <p>{{ pet.description }}</p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong><i class="fas fa-user"></i> Owner:</strong> {{ pet.owner_name }}</li>
+                <li class="list-group-item"><strong><i class="fas fa-venus-mars"></i> Sex:</strong> {{ pet.sex|title }}</li>
+                <li class="list-group-item"><strong><i class="fas fa-calendar-alt"></i> Date of Birth:</strong> {{ pet.dob }}</li>
+                <li class="list-group-item"><strong><i class="fas fa-map-marker-alt"></i> Location:</strong> {{ pet.location }}</li>
+                <li class="list-group-item"><strong><i class="fas fa-dollar-sign"></i> Price:</strong> ${{ pet.price }}</li>
+                <li class="list-group-item"><strong><i class="fas fa-phone"></i> Contact:</strong> {{ pet.contact }}</li>
+            </ul>
+            <div class="mt-4">
+                {% if pet.id in adopted_pet_ids %}
+                <small class="text-success fw-bold">Adoption request is already made for this pet!</small>
+                {% else %}
+                <a href="{% url 'adopt-pet' pet.slug %}" class="btn btn-lg rounded-3 btn-outline-success">Adopt Me</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3>Breed Details</h3>
+            <p>{{ pet.breed.description }}</p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Size:</strong> {{ pet.breed.size }}</li>
+                <li class="list-group-item"><strong>Lifespan:</strong> {{ pet.breed.lifespan }} years</li>
+                <li class="list-group-item"><strong>Trainability:</strong> {{ pet.breed.trainability }}</li>
+                <li class="list-group-item"><strong>Bark Level:</strong> {{ pet.breed.bark }}</li>
+                <li class="list-group-item"><strong>Energy Level:</strong> {{ pet.breed.energy }}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+<style>
+    .image-container {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .list-group-item {
+        background-color: #f8f9fa;
+        border: none;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+
+    .list-group-item strong {
+        color: #28a745;
+    }
+
+    .list-group-item i {
+        margin-right: 8px;
+        color: #343a40;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-weight: bold;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-outline-success:hover,
+    .btn-outline-dark:hover {
+        color: #fff;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .btn-outline-success:hover {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-outline-dark:hover {
+        background-color: #343a40;
+        border-color: #343a40;
+    }
+
+    .container {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+        background: linear-gradient(to right, #e8f5e9, #e0f7fa);
+    }
+
+    @media (max-width: 768px) {
+        .row {
+            flex-direction: column;
+        }
+
+        .col-md-6 {
+            margin-bottom: 20px;
+        }
+    }
+</style>

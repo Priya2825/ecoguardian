@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mt-5">
+    <h1>Available Pets</h1>
+    <a href="{% url 'manage-pets' request.user.id %}" class="btn btn-sm btn-success">Manage your pets</a><br>
+    <small>If you want to sell your pet, please <a href="{% url 'create-pet' %}">Click Here</a></small>
+    <div class="row mt-4">
+        {% for pet in pets %}
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-4 d-flex align-items-stretch">
+            <div class="card">
+                <div class="image-container">
+                    <img src="{{ pet.image.url }}" class="card-img-top" alt="{{ pet.name }}_img">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title"><a href="{% url 'detail-pet' pet.slug %}">{{ pet.name }}</a></h5>
+                    <p class="card-text">{{ pet.description|truncatechars:80 }}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Sex: {{ pet.sex|title }}</li>
+                    <li class="list-group-item">Breed: {{ pet.breed.name }}</li>
+                    <li class="list-group-item">Born on: {{ pet.dob }}</li>
+                </ul>
+                <div class="card-body">
+                    <a href="{% url 'detail-pet' pet.slug %}" class="btn btn-lg rounded-3 btn-outline-success">About Me</a>
+                    {% if pet.id in adopted_pet_ids %}
+                    <button disabled class="btn btn-lg rounded-3 btn-dark">Adopt Requested</a>
+                    {% else %}
+                    <a href="{% url 'adopt-pet' pet.slug %}" class="btn btn-lg rounded-3 btn-outline-dark">Adopt Me</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <small>There are no pets available to adopt!</small>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
+
+<style>
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .col-sm-12,
+    .col-md-6,
+    .col-lg-4 {
+        display: flex;
+        align-items: stretch;
+    }
+
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.2s ease-in-out;
+        background: linear-gradient(135deg, #ffffff, #f3f3f3);
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .image-container {
+        height: 300px; /* Fixed height for all images */
+        overflow: hidden;
+        border-bottom: 2px solid #28a745;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensures the image covers the entire area */
+    }
+
+    .card-body {
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+
+    .card-title a {
+        text-decoration: none;
+        color: #28a745;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .card-title a:hover {
+        text-decoration: underline;
+    }
+
+    .list-group-item {
+        background-color: #f8f9fa;
+        border: none;
+        padding-left: 20px;
+    }
+
+    .list-group-item::before {
+        content: "\2022";
+        color: #28a745;
+        font-weight: bold;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+    }
+
+    .btn {
+        transition: all 0.3s ease-in-out;
+        padding: 10px 20px;
+        font-weight: bold;
+    }
+
+    .btn:hover {
+        background-color: #28a745;
+        color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .btn-outline-success:hover {
+        background-color: #28a745;
+        border-color: #28a745;
+        color: #fff;
+    }
+
+    .btn-outline-dark:hover {
+        background-color: #343a40;
+        border-color: #343a40;
+        color: #fff;
+    }
+</style>
