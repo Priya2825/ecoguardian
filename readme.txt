@@ -1,85 +1,23 @@
-Modules 
-=================
-test 
-1. Donations
-2. Event Management
-3. Email Notification
-4. Blogs
-5. Environment news and updates 
-6. Recycling Tips
-7. Chat for inquiry
+Non-Profit Organization Website : EcoGuardian
 
-Databases :
+Project Overview
 
-event_category -
-> id
-> catagory 
+This project is a comprehensive website developed for a non-profit organization. It features robust event management, volunteer coordination, donation processing, and user account management functionalities. The platform aims to streamline operations, enhance community engagement, and support the organization’s mission.
+Features
 
-volunteer - 
-> id
-> first_name
-> last_name
-> Email
-> contact 
-> gender
-> dob
-> age_limit (18-60)
-> full_address 
-> profile_pic 
-> participation_history
-> joined_on
-> is_active
-> is_blocked 
+Event Management: Create, edit, delete, and view events. Each event can include details like title, category, date/time, venue, and media uploads. Users can add events to their Google Calendar.
+Volunteer Management: Register and manage volunteer information, including personal details and additional volunteering specifics.
+Donation Management: Make general or event-specific donations. Users can track their donation history and access relevant forms.
+User Account Management: Secure account creation and management for users, including features for adoption requests and donation tracking.
+Email Notifications: Automated emails for adoption requests, donation acknowledgments, and other updates.
 
-donation:
-> id 
-> donated_by
-> amount 
-> date_time 
-> if_donated_for_event (true/false)
-> event_info (fk-event)
-> donation_history
+Getting Started: Installation and running the porject 
+
+- clone the repository: git clone https://github.com/Priya2825/ecoguardian.git
+- cd to project directory 
+- create virtual environment : python -m venv nonprofitweb-env
+- activate the vitual environment. Right after running the above command: source nonprofitweb-env/bin/activate   (MAC)
+- Install all the required packages listed in the requirements.txt file. Now in command prompt locate the main project directory and run the below command : pip install -r requirements.txt
+- If all of the above commands runs successfully, then we have to run the server now : python manage.py runserver 127.0.0.1:8080
 
 
-organizer - 
-> id
-> event_name
-> category(fk)
-> date_from
-> date_to
-> time_from
-> time_to
-> banner
-> about 
-> venue
-> Create date_time 
-> Update date_time 
-> is_expired
-> is_active
-> is_volunteer_required 
-> volunteers
-> volunteer_capacity
-> sponsers
-> donations
-> terms_condition
-
-
-
-Module 1 : Organizer (5 Jun)
-Fields - 
-> Event Name 
-> Event catagory 
-> Organizer - company name 
-> Images 
-> Source Link 
-> Create date_time 
-> Update date_time 
-> Expired
-> Description / About 
-> Venue
-> volunteers required - (Max Capacity - 40)
-> volunteers requirements 
-> active_status 
-> sponsers - list of names 
-> Donate 
-> Terms and Conditions 
